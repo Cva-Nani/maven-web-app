@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+    
+    environment {
+        AWS_DEFAULT_REGION = 'us-west-1'
+        EKS_CLUSTER_NAME = 'deploy-eks1'
+        KUBECONFIG = '/var/lib/jenkins/config'
+    }
+    
+    stages {
+        stage('Authenticate with AWS') {
+            steps {
+                script {
+                        sh "aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name ${EKS_CLUSTER_NAME} --kubeconfig ${KUBECONFIG}"
+                }
+            }
+        }
+        
+        stage('Deploy Defender for Cloud') {
+            steps {
+                script {
+                    sh "kubectl apply -f https://github.com/maven-web-app/blob/master/twist_lock.yml"
+                }
+            }
+        }
+        
+    }
+}
