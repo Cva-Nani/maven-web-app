@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twistlock-defender
+  labels:
+    app: twistlock-defender
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: twistlock-defender
+  template:
+    metadata:
+      labels:
+        app: twistlock-defender
+    spec:
+      containers:
+      - name: twistlock-defender
+        image: twistlock/defender:latest
+        imagePullPolicy: Alway
